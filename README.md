@@ -58,6 +58,8 @@ Text Encoding Modes:
 - Xcode 26
 - SwiftLint
 - Core Image
+- Swift Testing
+- XCTest
 
 # Requirements
 
