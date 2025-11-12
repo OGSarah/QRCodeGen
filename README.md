@@ -21,13 +21,13 @@ Text Encoding Modes:
 - Byte: Characters from the ISO-8859-1 character set. ISO-8859-1 (aka Latin-1) is a single-byte character encoding standard for representing Western European languages, including characters, digits, and symbols.
 - Kanji: Double-byte characters from the Shift JIS character set. The Shift JIS character set is a character encoding standard for the Japanese language that uses a combination of one- and two-byte characters.
 
-# Screenshots (To Be Added)
+# Screenshots
 <div align="center">
   <div style="border: 2px solid white; border-radius: 10px;">
-    <img width="20%" src="">
-    <img width="20%" src="">
-    <img width="20%" src="">
-    <img width="20%" src="">
+    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/1_dark.png">
+    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/1_light.png">
+    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/2_dark.png">
+    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/2_light.png">
   </div>
 </div>
 
@@ -35,10 +35,18 @@ Text Encoding Modes:
 
 <div align="center">
   <div style="border: 2px solid white; border-radius: 10px;">
-    <img width="20%" src="">
-    <img width="20%" src="">
-    <img width="20%" src="">
-    <img width="20%" src="">
+    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/3_dark.png">
+    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/3_light.png">
+    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/4_dark.png">
+    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/4_light.png">
+  </div>
+</div>
+
+<br><br> 
+<div align="center">
+  <div style="border: 2px solid white; border-radius: 10px;">
+    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/5_dark.png">
+    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/5_light.png">
   </div>
 </div>
 
