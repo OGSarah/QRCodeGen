@@ -26,7 +26,8 @@ struct ContentView: View {
                         .textInputAutocapitalization(.never)
                         .lineLimit(5)
                         .submitLabel(.done)
-                        .accessibilityIdentifier("inputTextField")
+                        .accessibilityLabel("QR code input text")
+                        .accessibilityHint("Enter the text or URL you want to encode into a QR code. Supports multi-line input.")
                         .overlay(alignment: .trailing) {
                             HStack(spacing: 8) {
                                 if !inputText.isEmpty {
@@ -37,7 +38,8 @@ struct ContentView: View {
                                             .foregroundStyle(.secondary)
                                     }
                                     .buttonStyle(.plain)
-                                    .accessibilityLabel("Clear text")
+                                    .accessibilityLabel("Clear input")
+                                    .accessibilityHint("Removes all text from the input field.")
                                 }
                                 Button {
                                     if let paste = UIPasteboard.general.string, !paste.isEmpty {
@@ -48,13 +50,15 @@ struct ContentView: View {
                                         .foregroundStyle(.secondary)
                                 }
                                 .buttonStyle(.plain)
-                                .accessibilityLabel("Paste")
+                                .accessibilityLabel("Paste from clipboard")
+                                .accessibilityHint("Inserts the current clipboard content into the input field.")
                             }
                             .padding(.trailing, 6)
                         }
                 } header: {
                     Label("Input", systemImage: "rectangle.and.pencil.and.ellipsis")
                         .padding(.top, 20)
+                        .accessibilityAddTraits(.isHeader)
                 }
 
                 Section {
@@ -62,18 +66,22 @@ struct ContentView: View {
                         ForEach(ErrorCorrectionLevel.allCases) { level in
                             Text(level.description)
                                 .tag(level)
-                                .accessibilityIdentifier("eclSegment_\(String(describing: level))")
+                                .accessibilityLabel(level.description)
                         }
                     }
                     .pickerStyle(.segmented)
                     .padding(-5)
-                    .accessibilityIdentifier("eclSegmentedControl")
+                    .accessibilityLabel("Error Correction Level")
+                    .accessibilityHint("Choose how resiliant the QR code should be to damage. Higher levels use more space but are more resiliant.")
                 } header: {
                     Label("Error Correction Level", systemImage: "gauge.with.needle")
                         .padding(.top, 5)
+                        .accessibilityAddTraits(.isHeader)
                 } footer: {
                     Text("Higher levels make the QR code more resilient to damage.")
                         .padding(.bottom, 10)
+                        .font(.footnote)
+                        .accessibilityLabel("Higher error correction levels increase reliability but make the QR code denser.")
                 }
 
                 Section {
@@ -93,17 +101,17 @@ struct ContentView: View {
                         .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.borderedProminent)
-                    .accessibilityHint("Runs debug generation and prints diagnostic info")
                     .buttonStyle(.glass)
                     .glassEffect(.regular.tint(.blue).interactive())
                     .disabled(isGenerating)
-                    .accessibilityHint("Generates a QR code for the entered text")
-                    .accessibilityIdentifier("generateButton")
+                    .accessibilityHint("Creates a QR code from the current input text using the selected error correction level.")
+                    .accessibilityLabel(isGenerating ? "Generating QR code" : "Generate QR code")
 
                     if let error = generationError {
                         Text(error)
                             .foregroundStyle(.red)
                             .font(.footnote)
+                            .accessibilityLabel("Generation error: \(error)")
                     }
                 }
 
@@ -121,35 +129,38 @@ struct ContentView: View {
                                     .strokeBorder(.quaternary, lineWidth: 1)
                             )
                             .shadow(color: .black.opacity(0.1), radius: 8, y: 4)
-                            .accessibilityIdentifier("qrImageView")
+                            .accessibilityLabel("Generated QR code")
+                            .accessibilityHint("Double-tap and hold to open actions: copy, save, or share.")
                             .contextMenu {
                                 Button {
                                     copyImageToPasteboard()
                                 } label: {
                                     Label("Copy Image", systemImage: "doc.on.doc")
                                 }
-                                .accessibilityIdentifier("contextCopyImage")
+                                .accessibilityHint("Copies the QR code image to the clipboard.")
 
                                 Button {
                                     saveToPhotos()
                                 } label: {
                                     Label("Save to Photos", systemImage: "square.and.arrow.down")
                                 }
-                                .accessibilityIdentifier("contextSaveToPhotos")
+                                .accessibilityHint("Saves the QR code to your photo library.")
 
                                 if let ui = qrUIImage {
                                     ShareLink(item: Image(uiImage: ui), preview: SharePreview("QR Code", image: Image(uiImage: ui))) {
                                         Label("Share", systemImage: "square.and.arrow.up")
                                     }
-                                    .accessibilityIdentifier("contextShare")
+                                    .accessibilityHint("Opens the share sheet to send the QR code.")
                                 }
                             }
                     } header: {
                         Label("Your QR Code", systemImage: "qrcode.viewfinder")
                             .padding(.top, 10)
+                            .accessibilityAddTraits(.isHeader)
                     } footer: {
                         Text("Tap and hold to share or save.")
                             .font(.caption)
+                            .accessibilityLabel("Long press the QR code to copy, save, or share it.")
                     }
                 }
             }
@@ -157,6 +168,7 @@ struct ContentView: View {
             .scrollContentBackground(.hidden)
             .background(Color(.systemGroupedBackground))
             .navigationTitle("QR Code Generator")
+            .accessibilityLabel("QR Code Generator App")
             .toolbar {
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     Button {
@@ -166,7 +178,7 @@ struct ContentView: View {
                     } label: {
                         Label("Paste", systemImage: "doc.on.clipboard")
                     }
-                    .accessibilityIdentifier("toolbarPasteButton")
+                    .accessibilityHint("Pastes clipboard content into the input field.")
 
                     if !inputText.isEmpty {
                         Button {
@@ -174,7 +186,7 @@ struct ContentView: View {
                         } label: {
                             Label("Clear", systemImage: "xmark.circle")
                         }
-                        .accessibilityIdentifier("toolbarClearButton")
+                        .accessibilityHint("Clears the input text.")
                     }
 
                     if let ui = qrUIImage {
@@ -182,9 +194,20 @@ struct ContentView: View {
                                   preview: SharePreview("QR Code", image: Image(uiImage: ui))) {
                             Image(systemName: "square.and.arrow.up")
                         }
-                        .accessibilityLabel("Share")
-                        .accessibilityIdentifier("toolbarShareButton")
+                        .accessibilityLabel("Share QR code")
+                        .accessibilityHint("Opens share sheet to send the generated QR code.")
                     }
+                }
+            }
+            // Announce generation status
+            .onChange(of: isGenerating) { _, newValue in
+                if newValue {
+                    UIAccessibility.post(notification: .announcement, argument: "Generating QR code…")
+                }
+            }
+            .onChange(of: generationError) { _, newValue in
+                if let error = newValue {
+                    UIAccessibility.post(notification: .announcement, argument: "Error: \(error)")
                 }
             }
         }
@@ -210,6 +233,7 @@ struct ContentView: View {
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
                 qrUIImage = uiImage
                 qrImage = Image(uiImage: uiImage)
+                UIAccessibility.post(notification: .announcement, argument: "QR code generated successfully.")
             } catch {
                 UINotificationFeedbackGenerator().notificationOccurred(.error)
                 qrUIImage = nil
@@ -234,12 +258,14 @@ struct ContentView: View {
         guard let ui = qrUIImage else { return }
         UIPasteboard.general.image = ui
         UINotificationFeedbackGenerator().notificationOccurred(.success)
+        UIAccessibility.post(notification: .announcement, argument: "QR code copied to clipboard.")
     }
 
     private func saveToPhotos() {
         guard let ui = qrUIImage else { return }
         UIImageWriteToSavedPhotosAlbum(ui, nil, nil, nil)
         UINotificationFeedbackGenerator().notificationOccurred(.success)
+        UIAccessibility.post(notification: .announcement, argument: "QR code saved to photos.")
     }
 
 }
@@ -254,4 +280,3 @@ struct ContentView: View {
     ContentView()
         .preferredColorScheme(.light)
 }
-
