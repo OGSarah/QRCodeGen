@@ -26,6 +26,7 @@ struct ContentView: View {
                         .textInputAutocapitalization(.never)
                         .lineLimit(5)
                         .submitLabel(.done)
+                        .accessibilityIdentifier("inputTextField")
                         .overlay(alignment: .trailing) {
                             HStack(spacing: 8) {
                                 if !inputText.isEmpty {
@@ -59,11 +60,14 @@ struct ContentView: View {
                 Section {
                     Picker("Level", selection: $selectedECL) {
                         ForEach(ErrorCorrectionLevel.allCases) { level in
-                            Text(level.description).tag(level)
+                            Text(level.description)
+                                .tag(level)
+                                .accessibilityIdentifier("eclSegment_\(String(describing: level))")
                         }
                     }
                     .pickerStyle(.segmented)
                     .padding(-5)
+                    .accessibilityIdentifier("eclSegmentedControl")
                 } header: {
                     Label("Error Correction Level", systemImage: "gauge.with.needle")
                         .padding(.top, 5)
@@ -94,6 +98,8 @@ struct ContentView: View {
                     .glassEffect(.regular.tint(.blue).interactive())
                     .disabled(isGenerating)
                     .accessibilityHint("Generates a QR code for the entered text")
+                    .accessibilityIdentifier("generateButton")
+
                     if let error = generationError {
                         Text(error)
                             .foregroundStyle(.red)
@@ -115,21 +121,27 @@ struct ContentView: View {
                                     .strokeBorder(.quaternary, lineWidth: 1)
                             )
                             .shadow(color: .black.opacity(0.1), radius: 8, y: 4)
+                            .accessibilityIdentifier("qrImageView")
                             .contextMenu {
                                 Button {
                                     copyImageToPasteboard()
                                 } label: {
                                     Label("Copy Image", systemImage: "doc.on.doc")
                                 }
+                                .accessibilityIdentifier("contextCopyImage")
+
                                 Button {
                                     saveToPhotos()
                                 } label: {
                                     Label("Save to Photos", systemImage: "square.and.arrow.down")
                                 }
+                                .accessibilityIdentifier("contextSaveToPhotos")
+
                                 if let ui = qrUIImage {
                                     ShareLink(item: Image(uiImage: ui), preview: SharePreview("QR Code", image: Image(uiImage: ui))) {
                                         Label("Share", systemImage: "square.and.arrow.up")
                                     }
+                                    .accessibilityIdentifier("contextShare")
                                 }
                             }
                     } header: {
@@ -154,6 +166,7 @@ struct ContentView: View {
                     } label: {
                         Label("Paste", systemImage: "doc.on.clipboard")
                     }
+                    .accessibilityIdentifier("toolbarPasteButton")
 
                     if !inputText.isEmpty {
                         Button {
@@ -161,6 +174,7 @@ struct ContentView: View {
                         } label: {
                             Label("Clear", systemImage: "xmark.circle")
                         }
+                        .accessibilityIdentifier("toolbarClearButton")
                     }
 
                     if let ui = qrUIImage {
@@ -169,6 +183,7 @@ struct ContentView: View {
                             Image(systemName: "square.and.arrow.up")
                         }
                         .accessibilityLabel("Share")
+                        .accessibilityIdentifier("toolbarShareButton")
                     }
                 }
             }
@@ -239,3 +254,4 @@ struct ContentView: View {
     ContentView()
         .preferredColorScheme(.light)
 }
+
