@@ -40,6 +40,7 @@ struct QRCodeGeneratorTests {
         return Data(bytes: data, count: bytesPerRow * height)
     }
 
+    @MainActor
     @Test("Generates a QR image for simple input at all ECLs")
     func generatesImageForAllECLs() throws {
         let generator = QRCodeGenerator()
@@ -49,6 +50,7 @@ struct QRCodeGeneratorTests {
         }
     }
 
+    @MainActor
     @Test("Deterministic output for same input and ECL")
     func deterministicOutput() throws {
         let generator = QRCodeGenerator()
@@ -67,6 +69,7 @@ struct QRCodeGeneratorTests {
         #expect(a == b, "Same input and ECL should yield identical pixel data")
     }
 
+    @MainActor
     @Test("Different ECLs usually produce different pixel data")
     func differentECLProducesDifferentImage() throws {
         let generator = QRCodeGenerator()
@@ -82,6 +85,7 @@ struct QRCodeGeneratorTests {
         #expect(dL != dH, "Different ECLs should typically produce different encoded images for non-trivial input")
     }
 
+    @MainActor
     @Test("Handles empty input without crashing")
     func emptyInput() throws {
         let generator = QRCodeGenerator()
