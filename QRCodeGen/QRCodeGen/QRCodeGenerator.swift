@@ -39,7 +39,7 @@ class QRCodeGenerator {
         let scaled = ciImage.transformed(by: transform)
 
         // Add quiet zone (white padding) – CoreImage does **not** add it automatically
-        let size = scaled.extent.size
+        _ = scaled.extent.size
         let padded = scaled.transformed(by: CGAffineTransform(
             translationX: CGFloat(quietZoneModules * modulePixelSize),
             y: CGFloat(quietZoneModules * modulePixelSize)
