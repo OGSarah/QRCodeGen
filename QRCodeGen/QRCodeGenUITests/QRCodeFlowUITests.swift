@@ -14,7 +14,7 @@ final class QRCodeFlowUITests: XCTestCase {
     }
 
     // Helpers
-    private func inputElement(in app: XCUIApplication) -> XCUIElement {
+    @MainActor private func inputElement(in app: XCUIApplication) -> XCUIElement {
         // Prefer the explicit identifier we added
         let identified = app.textFields["inputTextField"]
         if identified.exists { return identified }
