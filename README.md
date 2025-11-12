@@ -52,7 +52,7 @@ Text Encoding Modes:
 
 
 # Language, Frameworks, & Tools used:
-- Swift
+- Swift 6
 - SwiftUI
 - iOS 26
 - Xcode 26
