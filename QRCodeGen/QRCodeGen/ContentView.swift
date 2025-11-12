@@ -57,7 +57,6 @@ struct ContentView: View {
                         }
                 } header: {
                     Label("Input", systemImage: "rectangle.and.pencil.and.ellipsis")
-                        .padding(.top, 20)
                         .accessibilityAddTraits(.isHeader)
                 }
 
@@ -70,16 +69,13 @@ struct ContentView: View {
                         }
                     }
                     .pickerStyle(.segmented)
-                    .padding(-5)
                     .accessibilityLabel("Error Correction Level")
                     .accessibilityHint("Choose how resiliant the QR code should be to damage. Higher levels use more space but are more resiliant.")
                 } header: {
                     Label("Error Correction Level", systemImage: "gauge.with.needle")
-                        .padding(.top, 5)
                         .accessibilityAddTraits(.isHeader)
                 } footer: {
                     Text("Higher levels make the QR code more resilient to damage.")
-                        .padding(.bottom, 10)
                         .font(.footnote)
                         .accessibilityLabel("Higher error correction levels increase reliability but make the QR code denser.")
                 }
@@ -155,7 +151,6 @@ struct ContentView: View {
                             }
                     } header: {
                         Label("Your QR Code", systemImage: "qrcode.viewfinder")
-                            .padding(.top, 10)
                             .accessibilityAddTraits(.isHeader)
                     } footer: {
                         Text("Tap and hold to share or save.")
