@@ -15,10 +15,10 @@ enum ErrorCorrectionLevel: UInt8, CaseIterable, Identifiable {
 
     var description: String {
         switch self {
-        case .L: return "Low (7%)"
-        case .M: return "Medium (15%)"
-        case .Q: return "Quartile (25%)"
-        case .H: return "High (30%)"
+        case .L: return "Low"
+        case .M: return "Medium"
+        case .Q: return "Quartile"
+        case .H: return "High"
         }
     }
 

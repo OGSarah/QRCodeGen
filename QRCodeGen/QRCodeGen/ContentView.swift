@@ -70,7 +70,7 @@ struct ContentView: View {
                     }
                     .pickerStyle(.segmented)
                     .accessibilityLabel("Error Correction Level")
-                    .accessibilityHint("Choose how resiliant the QR code should be to damage. Higher levels use more space but are more resiliant.")
+                    .accessibilityHint("Choose how resilient the QR code should be to damage. Higher levels use more space but are more resiliant.")
                 } header: {
                     Label("Error Correction Level", systemImage: "gauge.with.needle")
                         .accessibilityAddTraits(.isHeader)
