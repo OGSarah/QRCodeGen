@@ -2,9 +2,9 @@
 //  QRAppearanceSection.swift
 //  QRCodeGen
 //
-//  Customization controls: foreground/background tint and module size. Edits
-//  live-restyle an already-generated code via the view model's debounced
-//  regeneration.
+//  Customization controls: foreground/background tint and module size. A small
+//  swatch previews the chosen colors live; the full-size code in "Your QR Code"
+//  only updates when the user taps Generate.
 //
 
 import SwiftUI
@@ -33,16 +33,38 @@ struct QRAppearanceSection: View {
                 .accessibilityLabel("Module size")
                 .accessibilityValue("\(viewModel.appearance.modulePixelSize) pixels per module")
             }
+
+            LabeledContent("Preview") {
+                colorPreview
+            }
         } header: {
             Label("Appearance", systemImage: "paintpalette")
                 .accessibilityAddTraits(.isHeader)
         } footer: {
-            Text("Customize the colors and size of the generated QR code. High contrast keeps it scannable.")
+            Text("Customize the colors and size of the generated QR code. High contrast keeps it scannable. Tap Generate to apply your changes.")
                 .font(.footnote)
         }
-        .onChange(of: viewModel.appearance) {
-            viewModel.regenerateIfNeeded()
-        }
+    }
+
+    /// A lightweight swatch showing the current foreground/background pairing,
+    /// updated live as the colors change — without re-rendering the full code.
+    private var colorPreview: some View {
+        Image(systemName: "qrcode")
+            .resizable()
+            .interpolation(.none)
+            .aspectRatio(1, contentMode: .fit)
+            .frame(width: 40, height: 40)
+            .foregroundStyle(viewModel.appearance.foreground)
+            .padding(6)
+            .background(viewModel.appearance.background, in: RoundedRectangle(cornerRadius: 6))
+            .overlay(
+                RoundedRectangle(cornerRadius: 6)
+                    .strokeBorder(.quaternary, lineWidth: 1)
+            )
+            .accessibilityIdentifier("appearanceColorPreview")
+            .accessibilityElement()
+            .accessibilityLabel("Color preview")
+            .accessibilityValue("A sample showing the foreground color on the background color.")
     }
 
     private var sliderRange: ClosedRange<Double> {
@@ -55,4 +77,19 @@ struct QRAppearanceSection: View {
             set: { viewModel.appearance.modulePixelSize = Int($0) }
         )
     }
+}
+
+// MARK: Previews
+#Preview("Light Mode") {
+    List {
+        QRAppearanceSection(viewModel: PreviewFactory.viewModel())
+    }
+    .preferredColorScheme(.light)
+}
+
+#Preview("Dark Mode") {
+    List {
+        QRAppearanceSection(viewModel: PreviewFactory.viewModel())
+    }
+    .preferredColorScheme(.dark)
 }

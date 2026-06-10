@@ -69,7 +69,12 @@ final class QRGeneratorViewModel {
 
     /// Generates a QR code from the current inputs. When `immediate` is false the
     /// work is debounced, so rapid edits coalesce into a single render.
-    func generate(immediate: Bool) {
+    ///
+    /// `persist` records a history entry on success. Only an explicit Generate
+    /// (or restore) commits to history; live restyling via `regenerateIfNeeded`
+    /// passes `false` so tweaking the appearance before tapping Generate doesn't
+    /// litter history with intermediate variations.
+    func generate(immediate: Bool, persist: Bool = true) {
         generationTask?.cancel()
         let request = QRCodeRequest(
             text: inputText,
@@ -82,26 +87,29 @@ final class QRGeneratorViewModel {
                 try? await Task.sleep(for: Self.debounce)
                 if Task.isCancelled { return }
             }
-            await self.run(request)
+            await self.run(request, persist: persist)
         }
     }
 
     /// Re-renders (debounced) only when a code already exists, so changing the
     /// error-correction level or appearance restyles the current code without
-    /// generating one from empty/unconfirmed input.
+    /// generating one from empty/unconfirmed input. The restyle is never
+    /// recorded in history — only tapping Generate commits an entry.
     func regenerateIfNeeded() {
         guard renderedImage != nil else { return }
-        generate(immediate: false)
+        generate(immediate: false, persist: false)
     }
 
-    private func run(_ request: QRCodeRequest) async {
+    private func run(_ request: QRCodeRequest, persist: Bool) async {
         phase = .generating
         do {
             let cgImage = try await generator.makeImage(for: request)
             if Task.isCancelled { return }
             renderedImage = UIImage(cgImage: cgImage)
             phase = .success
-            persist(request)
+            if persist {
+                self.persist(request)
+            }
         } catch {
             renderedImage = nil
             phase = .failure(message(for: error))
@@ -110,6 +118,14 @@ final class QRGeneratorViewModel {
 
     private func message(for error: Error) -> String {
         (error as? QRCodeError)?.errorDescription ?? error.localizedDescription
+    }
+
+    /// Renders an arbitrary request to an image without touching the editor's
+    /// own output state. Used by the history detail screen to preview a saved
+    /// entry independently of whatever is currently in the editor.
+    func image(for request: QRCodeRequest) async throws -> UIImage {
+        let cgImage = try await generator.makeImage(for: request)
+        return UIImage(cgImage: cgImage)
     }
 
     // MARK: Export

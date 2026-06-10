@@ -62,7 +62,7 @@ struct ContentView: View {
             }
             .buttonStyle(.glass)
             .glassEffect(.regular.tint(.blue).interactive())
-            .disabled(viewModel.isGenerating)
+            .disabled(viewModel.isGenerating || viewModel.inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             .accessibilityIdentifier("generateButton")
             .accessibilityHint("Creates a QR code from the current input text using the selected error correction level.")
             .accessibilityLabel(viewModel.isGenerating ? "Generating QR code" : "Generate QR code")
@@ -130,8 +130,7 @@ struct ContentView: View {
     }
 }
 
-// MARK: Preview
-
+// MARK: Previews
 #Preview("Dark Mode") {
     ContentView(viewModel: PreviewFactory.viewModel())
         .preferredColorScheme(.dark)

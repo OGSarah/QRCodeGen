@@ -63,3 +63,18 @@ struct QRResultSection: View {
         }
     }
 }
+
+// MARK: Previews
+#Preview("Light Mode") {
+    List {
+        QRResultSection(viewModel: PreviewFactory.populatedViewModel())
+    }
+    .preferredColorScheme(.light)
+}
+
+#Preview("Dark Mode") {
+    List {
+        QRResultSection(viewModel: PreviewFactory.populatedViewModel())
+    }
+    .preferredColorScheme(.dark)
+}

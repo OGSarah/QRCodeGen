@@ -2,8 +2,8 @@
 //  QRHistorySection.swift
 //  QRCodeGen
 //
-//  Recent generations, persisted via SwiftData. Tapping an entry restores its
-//  inputs into the editor and regenerates; swipe to delete.
+//  Recent generations, persisted via SwiftData. Tapping an entry opens a
+//  detail screen with its QR code and information; swipe to delete.
 //
 
 import SwiftUI
@@ -15,14 +15,14 @@ struct QRHistorySection: View {
         if !viewModel.history.isEmpty {
             Section {
                 ForEach(viewModel.history) { entry in
-                    Button {
-                        viewModel.restore(entry)
+                    NavigationLink {
+                        QRHistoryDetailView(entry: entry, viewModel: viewModel)
                     } label: {
                         row(for: entry)
                     }
                     .accessibilityIdentifier("historyEntry")
                     .accessibilityLabel("History entry: \(entry.text)")
-                    .accessibilityHint("Restores this text and settings, then regenerates.")
+                    .accessibilityHint("Opens the QR code and its details.")
                 }
                 .onDelete(perform: delete)
             } header: {
@@ -56,4 +56,23 @@ struct QRHistorySection: View {
             viewModel.delete(viewModel.history[index])
         }
     }
+}
+
+// MARK: Previews
+#Preview("Light Mode") {
+    NavigationStack {
+        List {
+            QRHistorySection(viewModel: PreviewFactory.populatedViewModel())
+        }
+    }
+    .preferredColorScheme(.light)
+}
+
+#Preview("Dark Mode") {
+    NavigationStack {
+        List {
+            QRHistorySection(viewModel: PreviewFactory.populatedViewModel())
+        }
+    }
+    .preferredColorScheme(.dark)
 }

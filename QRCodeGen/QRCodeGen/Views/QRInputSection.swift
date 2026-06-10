@@ -52,3 +52,18 @@ struct QRInputSection: View {
         }
     }
 }
+
+// MARK: Previews
+#Preview("Light Mode") {
+    List {
+        QRInputSection(viewModel: PreviewFactory.viewModel())
+    }
+    .preferredColorScheme(.light)
+}
+
+#Preview("Dark Mode") {
+    List {
+        QRInputSection(viewModel: PreviewFactory.viewModel())
+    }
+    .preferredColorScheme(.dark)
+}

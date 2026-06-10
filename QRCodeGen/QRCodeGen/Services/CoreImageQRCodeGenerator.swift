@@ -8,7 +8,6 @@
 //  a correct quiet zone, and configurable foreground/background tint.
 //
 
-import CoreImage
 import CoreImage.CIFilterBuiltins
 import SwiftUI
 import UIKit

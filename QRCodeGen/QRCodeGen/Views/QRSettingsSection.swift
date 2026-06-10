@@ -38,3 +38,18 @@ struct QRSettingsSection: View {
         }
     }
 }
+
+// MARK: Previews
+#Preview("Light Mode") {
+    List {
+        QRSettingsSection(viewModel: PreviewFactory.viewModel())
+    }
+    .preferredColorScheme(.light)
+}
+
+#Preview("Dark Mode") {
+    List {
+        QRSettingsSection(viewModel: PreviewFactory.viewModel())
+    }
+    .preferredColorScheme(.dark)
+}

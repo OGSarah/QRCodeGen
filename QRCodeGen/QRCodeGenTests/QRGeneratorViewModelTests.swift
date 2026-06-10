@@ -45,6 +45,26 @@ struct QRGeneratorViewModelTests {
         #expect(sut.viewModel.history.count == 1)
     }
 
+    @Test("Tapping Generate again after a restyle records a second entry")
+    func secondGenerateRecordsHistory() async {
+        let sut = makeSUT()
+        sut.viewModel.inputText = "Hello"
+        sut.viewModel.generate(immediate: true)
+        await sut.viewModel.generationTask?.value
+
+        // Restyling alone must not persist (it only drives the color preview).
+        sut.viewModel.appearance.modulePixelSize = 14
+        sut.viewModel.regenerateIfNeeded()
+        await sut.viewModel.generationTask?.value
+        #expect(sut.store.entries.count == 1)
+
+        // Tapping Generate commits the restyled code as a new history entry.
+        sut.viewModel.generate(immediate: true)
+        await sut.viewModel.generationTask?.value
+        #expect(sut.store.entries.count == 2)
+        #expect(sut.viewModel.history.count == 2)
+    }
+
     @Test("Generation failure clears the image and surfaces the error")
     func generationFailure() async {
         let sut = makeSUT(generatorOutcome: .failure(.generationFailed))
