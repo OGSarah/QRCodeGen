@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/OGSarah/QRCodeGen/blob/cc4f2c58c50fd12fb13ae6fc96609b5121309dee/Screenshots/AppIcon.png" width="300" style="border: 3px solid white; border-radius: 15px; vertical-align: middle; margin-right: 20px;">
+  <img src="/Screenshots/AppIcon.png" width="300" style="border: 3px solid white; border-radius: 15px; vertical-align: middle; margin-right: 20px;">
   <h1 style="display: inline-block; vertical-align: middle;">QRCodeGen - iOS app with SwiftUI</h1>
 </div>
 
