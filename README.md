@@ -57,10 +57,10 @@ Text Encoding Modes:
 # Screenshots
 <div align="center">
   <div style="border: 2px solid white; border-radius: 10px;">
-    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/1_dark.png">
-    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/1_light.png">
-    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/2_dark.png">
-    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/2_light.png">
+    <img width="20%" src="/Screenshots/1_dark.png">
+    <img width="20%" src="/Screenshots/1_light.png">
+    <img width="20%" src="/Screenshots/2_dark.png">
+    <img width="20%" src="/Screenshots/2_light.png">
   </div>
 </div>
 
@@ -68,18 +68,18 @@ Text Encoding Modes:
 
 <div align="center">
   <div style="border: 2px solid white; border-radius: 10px;">
-    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/3_dark.png">
-    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/3_light.png">
-    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/4_dark.png">
-    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/4_light.png">
+    <img width="20%" src="/Screenshots/3_dark.png">
+    <img width="20%" src="/Screenshots/3_light.png">
+    <img width="20%" src="/Screenshots/4_dark.png">
+    <img width="20%" src="/Screenshots/4_light.png">
   </div>
 </div>
 
 <br><br> 
 <div align="center">
   <div style="border: 2px solid white; border-radius: 10px;">
-    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/5_dark.png">
-    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/5_light.png">
+    <img width="20%" src="/Screenshots/5_dark.png">
+    <img width="20%" src="/Screenshots/5_light.png">
   </div>
 </div>
 
