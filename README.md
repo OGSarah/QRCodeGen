@@ -1,6 +1,6 @@
 <div align="center">
   <img src="/Screenshots/AppIcon.png" width="300" style="border: 3px solid white; border-radius: 15px; vertical-align: middle; margin-right: 20px;">
-  <h1 style="display: inline-block; vertical-align: middle;">QRCodeGen - iOS app with SwiftUI</h1>
+  <h1 style="display: inline-block; vertical-align: middle;">QRCodeGen</h1>
 </div>
 
 A Swift iOS QR Code Generator app made with SwiftUI that meets the ISO/IEC 18004 specification for QR codes. The app is made using Core Image.
@@ -54,8 +54,8 @@ Text Encoding Modes:
 # Language, Frameworks, & Tools used:
 - Swift 6
 - SwiftUI
-- iOS 26
-- Xcode 26
+- iOS 27
+- Xcode 27
 - SwiftLint
 - Core Image
 - Swift Testing
