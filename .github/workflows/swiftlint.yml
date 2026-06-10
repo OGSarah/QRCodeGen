@@ -18,7 +18,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install SwiftLint
-        run: brew install swiftlint
+        # Pin the version. `brew install swiftlint` tracks the newest release,
+        # and rule behavior changes between versions (e.g. accessibility_label_for_image
+        # tightened in 0.63), so an unpinned install fails CI on code that lints
+        # clean locally. Bump this deliberately and re-lint when upgrading.
+        env:
+          SWIFTLINT_VERSION: 0.63.3
+        run: |
+          curl -sSL -o swiftlint.zip "https://github.com/realm/SwiftLint/releases/download/${SWIFTLINT_VERSION}/portable_swiftlint.zip"
+          unzip -o -q swiftlint.zip -d "$RUNNER_TEMP/swiftlint"
+          echo "$RUNNER_TEMP/swiftlint" >> "$GITHUB_PATH"
+      - name: Verify SwiftLint version
+        run: swiftlint version
       - name: Lint
         # Run from the directory that holds the root .swiftlint.yml WITHOUT
         # passing --config. An explicit --config disables nested-configuration

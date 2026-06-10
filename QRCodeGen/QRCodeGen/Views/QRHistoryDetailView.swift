@@ -73,6 +73,11 @@ struct QRHistoryDetailView: View {
                 Image(uiImage: image)
                     .resizable()
                     .interpolation(.none)
+                    // Keep the label adjacent to the Image: a long layout chain
+                    // (background/overlay) between the Image and its label hides
+                    // it from accessibility_label_for_image in SwiftLint 0.63+.
+                    // After the Image-only modifiers so they still type-check.
+                    .accessibilityLabel("QR code for \(entry.text)")
                     .aspectRatio(1, contentMode: .fit)
                     .frame(maxWidth: .infinity)
                     .padding(20)
@@ -83,7 +88,6 @@ struct QRHistoryDetailView: View {
                     )
                     .shadow(color: .black.opacity(0.1), radius: 8, y: 4)
                     .accessibilityIdentifier("historyDetailImageView")
-                    .accessibilityLabel("QR code for \(entry.text)")
             } else if let renderError {
                 Text(renderError)
                     .foregroundStyle(.red)

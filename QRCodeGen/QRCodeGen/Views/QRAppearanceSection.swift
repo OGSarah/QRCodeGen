@@ -73,6 +73,12 @@ struct QRAppearanceSection: View {
         Image(systemName: "qrcode")
             .resizable()
             .interpolation(.none)
+            // Decorative within the swatch: the enclosing accessibilityElement
+            // below exposes the label/value, so hide the inner image. (Also
+            // satisfies accessibility_label_for_image, which can't see that the
+            // element provides the label.) Placed after the Image-only modifiers
+            // so .resizable()/.interpolation() still type-check.
+            .accessibilityHidden(true)
             .aspectRatio(1, contentMode: .fit)
             .frame(width: 40, height: 40)
             .foregroundStyle(viewModel.appearance.foreground)
