@@ -9,6 +9,7 @@ import SwiftUI
 
 struct QRInputSection: View {
     @Bindable var viewModel: QRGeneratorViewModel
+    @FocusState private var isInputFocused: Bool
 
     var body: some View {
         Section {
@@ -16,6 +17,20 @@ struct QRInputSection: View {
                 .textInputAutocapitalization(.never)
                 .lineLimit(5)
                 .submitLabel(.done)
+                .focused($isInputFocused)
+                .toolbar {
+                    // A vertical-axis TextField inserts a newline on the keyboard's
+                    // return key, so it never fires `onSubmit`. Provide an explicit
+                    // Done button above the keyboard to dismiss it.
+                    ToolbarItemGroup(placement: .keyboard) {
+                        Spacer()
+                        Button("Done") {
+                            isInputFocused = false
+                        }
+                        .accessibilityIdentifier("keyboardDoneButton")
+                        .accessibilityHint("Dismisses the keyboard.")
+                    }
+                }
                 .accessibilityIdentifier("inputTextField")
                 .accessibilityLabel("QR code input text")
                 .accessibilityHint("Enter the text or URL you want to encode into a QR code. Supports multi-line input.")
