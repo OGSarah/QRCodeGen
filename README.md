@@ -3,11 +3,14 @@
   <h1 style="display: inline-block; vertical-align: middle;">QRCodeGen</h1>
 </div>
 
+[![SwiftLint](https://github.com/OGSarah/QRCodeGen/actions/workflows/swiftlint.yml/badge.svg)](https://github.com/OGSarah/QRCodeGen/actions/workflows/swiftlint.yml)
+[![Unit Tests](https://github.com/OGSarah/QRCodeGen/actions/workflows/tests.yml/badge.svg)](https://github.com/OGSarah/QRCodeGen/actions/workflows/tests.yml)
+
 A Swift iOS QR Code Generator app made with SwiftUI that meets the ISO/IEC 18004 specification for QR codes. The app is made using Core Image.
 
-CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs SwiftLint (`--strict`) and the unit tests on every push to `main` and every pull request.
+CI runs [SwiftLint](.github/workflows/swiftlint.yml) (`--strict`) and the [unit tests](.github/workflows/tests.yml) in separate workflows on every push to `main` and every pull request.
 
-> **CI note:** The suite is green locally on the Xcode 27 / iOS 27 beta toolchain. The GitHub Actions runners don't yet ship that toolchain, so the badge will stay red until they do. This is a runner-availability gap, not a test failure.
+> **CI note:** The suite is green locally on the Xcode 27 / iOS 27 beta toolchain. The GitHub Actions runners don't yet ship that toolchain, so the badges will stay red until they do. This is a runner-availability gap, not a test failure.
 
 
 ## Architecture
