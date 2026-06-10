@@ -55,33 +55,15 @@ Text Encoding Modes:
 - Kanji: Double-byte characters from the Shift JIS character set. The Shift JIS character set is a character encoding standard for the Japanese language that uses a combination of one- and two-byte characters.
 
 # Screenshots
-<div align="center">
-  <div style="border: 2px solid white; border-radius: 10px;">
-    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/1_dark.png">
-    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/1_light.png">
-    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/2_dark.png">
-    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/2_light.png">
-  </div>
-</div>
+Here are some screenshots showcasing the app's features:
 
-<br><br> 
+| Generator screen | Text input | Generated code | Save & share | History detail |
+| :---: | :---: | :---: | :---: | :---: |
+| ![Generator screen](Screenshots/generatorscreen_dark.png) | ![Text input](Screenshots/textinput_dark.png) | ![Generated code](Screenshots/generatedcode_dark.png) | ![Save & share](Screenshots/saveandshare_dark.png) | ![History detail](Screenshots/historydetail_dark.png) |
 
-<div align="center">
-  <div style="border: 2px solid white; border-radius: 10px;">
-    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/3_dark.png">
-    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/3_light.png">
-    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/4_dark.png">
-    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/4_light.png">
-  </div>
-</div>
-
-<br><br> 
-<div align="center">
-  <div style="border: 2px solid white; border-radius: 10px;">
-    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/5_dark.png">
-    <img width="20%" src="https://github.com/OGSarah/QRCodeGen/blob/042368005066a21126fd0a30e44595a108d150ec/Screenshots/5_light.png">
-  </div>
-</div>
+| Generator screen | Text input | Generated code | Save & share | History detail |
+| :---: | :---: | :---: | :---: | :---: |
+| ![Generator screen](Screenshots/generatorscreen_light.png) | ![Text input](Screenshots/textinput_light.png) | ![Generated code](Screenshots/generatedcode_light.png) | ![Save & share](Screenshots/saveandshare_light.png) | ![History detail](Screenshots/historydetail_light.png) |
 
 
 # Language, Frameworks, & Tools used:
