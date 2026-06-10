@@ -5,7 +5,7 @@
 //  Created by Sarah Clark on 11/11/25.
 //
 
-enum ErrorCorrectionLevel: UInt8, CaseIterable, Identifiable {
+nonisolated enum ErrorCorrectionLevel: UInt8, CaseIterable, Identifiable, Sendable {
     case L = 0b01   // Low   ~7%
     case M = 0b00   // Medium ~15%
     case Q = 0b11   // Quartile ~25%

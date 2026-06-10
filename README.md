@@ -5,6 +5,37 @@
 
 A Swift iOS QR Code Generator app made with SwiftUI that meets the ISO/IEC 18004 specification for QR codes. The app is made using Core Image.
 
+> **Engineering portfolio note.** This project is intentionally structured to demonstrate senior-level iOS practices on a deliberately small surface: a clean layered architecture with protocol-based dependency injection, an `@Observable` view model, typed errors, a SwiftData persistence layer kept behind a protocol, a comprehensive Swift Testing suite, and CI. See [Architecture](#architecture) and [Testing](#testing).
+
+## Architecture
+
+The app follows a layered, testable design. The view owns no business logic; everything flows through an `@Observable` view model that depends only on protocols, so each layer is replaceable and unit-testable in isolation.
+
+```
+App/          Composition root — builds the dependency graph and SwiftData container
+Models/       QRCodeRequest, QRAppearance, ErrorCorrectionLevel, QRCodeError (typed)
+Services/     QRCodeGenerating  → CoreImageQRCodeGenerator   (rendering)
+              ImageExporting    → LiveImageExporter           (clipboard / Photos)
+              HistoryStoring     → SwiftDataHistoryStore        (persistence)
+Persistence/  QRHistoryEntry (@Model)
+ViewModels/   QRGeneratorViewModel (@Observable, @MainActor)
+Views/        ContentView shell + focused section views
+```
+
+**Key decisions**
+
+| Decision | Why |
+|:---|:---|
+| `@Observable` view model, no Combine | Modern Swift state with `async/await`; no reactive framework needed for one screen. |
+| Protocol seams (`QRCodeGenerating`, `ImageExporting`, `HistoryStoring`) | The view model depends on abstractions, so tests inject mocks — no Core Image, UIKit, or disk required. |
+| Plain `AppDependencies` struct for DI | Init-injection with a live default is the idiomatic "container"; no third-party DI framework. |
+| Typed `QRCodeError: LocalizedError` | Replaces untyped `NSError`; call sites switch on cases and tests assert exact failures. |
+| Single image source of truth | The view model stores one `UIImage` and derives the SwiftUI `Image`, eliminating a class of sync bugs. |
+| SwiftData behind `HistoryStoring` | SwiftData is an implementation detail, not the architecture — the view model never imports it. |
+| Off-main, `Sendable` generator | Rendering is CPU-bound; the generator is `nonisolated`/`async` so the main thread stays responsive. |
+
+**Deliberately *not* added** (right-sizing is itself a senior signal): a DI container framework, Coordinator/Router, a repository layer over a single store, per-section view models, a hand-rolled QR encoder, or logo/gradient styling. Each would add code without adding correctness for a single-screen app.
+
 # Brief Explanation of Technical Background of QR Codes
 QR codes (Quick Response codes) are two-dimensional barcodes that store information in a grid of black and white squares. Originally developed in 1994 by Denso Wave for tracking automotive parts in manufacturing, QR codes have become ubiquitous for quickly sharing URLs, contact information, and other data through smartphone cameras. The "QR" name reflects their design goal: to be decoded at high speed.
 
@@ -52,14 +83,15 @@ Text Encoding Modes:
 
 
 # Language, Frameworks, & Tools used:
-- Swift 6
-- SwiftUI
-- iOS 27
-- Xcode 27
+- Swift 6 (strict concurrency, default `@MainActor` isolation)
+- SwiftUI + Observation (`@Observable`)
+- SwiftData (history persistence)
+- iOS 27 / Xcode 27
+- Core Image (`CIQRCodeGenerator`, `CIFalseColor`)
+- PhotosUI / Photos
+- Swift Testing (unit) + XCTest / XCUIAutomation (UI)
 - SwiftLint
-- Core Image
-- Swift Testing
-- XCTest
+- GitHub Actions (CI)
 
 # Requirements
 
@@ -96,8 +128,18 @@ Text Encoding Modes:
     `Low (7%)` | `Medium (15%)` | `Quartile (25%)` | `High (30%)`  
   - Real-time resilience feedback in UI  
 
+- **Appearance Customization**  
+  - Foreground & background color pickers (via Core Image `CIFalseColor`)  
+  - Adjustable module size (6–20 px), clamped to stay scannable  
+  - Live, debounced restyle of the current code  
+
+- **Generation History (SwiftData)**  
+  - Recent generations persisted across launches  
+  - Tap to restore a code's text, error-correction level, and appearance  
+  - Swipe to delete  
+
 - **Beautiful, Scalable Output**  
-  - Crisp rendering with **10× module size** + **4-module quiet zone**  
+  - Configurable module size + **4-module quiet zone** composited over the background color  
   - High-resolution `CGImage` → `UIImage` pipeline  
   - Smooth interpolation disabled for pixel-perfect QR modules  
 
@@ -122,8 +164,36 @@ Text Encoding Modes:
   - `ProgressView` during generation  
 
 - **Zero External Dependencies**  
-  - Uses only **Apple frameworks**: `SwiftUI`, `CoreImage`, `PhotosUI`, `UniformTypeIdentifiers`
+  - Uses only **Apple frameworks**: `SwiftUI`, `Observation`, `SwiftData`, `CoreImage`, `Photos`/`PhotosUI`, `UniformTypeIdentifiers`
 
+# Testing
+
+The suite is split by what it verifies, and the seams above make the business logic testable without UIKit, Core Image, or disk.
+
+| Suite | Layer | Coverage |
+|:---|:---|:---|
+| `QRGeneratorViewModelTests` | View model | Generation success/failure, history recording, empty-input rules, export forwarding, restore — driven entirely through mocks. |
+| `CoreImageQRCodeGeneratorTests` | Rendering | Determinism, error-correction sensitivity, empty input, module-size scaling, and tinting. |
+| `HistoryStoreTests` | Persistence | Add / fetch / ordering / fetch-limit / delete / clear against an in-memory SwiftData container. |
+| `ModelTests` | Models | Appearance clamping, `Codable` round-trip, and Color↔hex bridging. |
+| `QRCodeFlowUITests` | UI | End-to-end flows via accessibility identifiers (generate, context menu, toolbar, ECL switching). |
+
+Unit tests use **Swift Testing** (`@Suite`/`@Test`/`#expect`); UI tests use **XCUIAutomation** (XCTest), the supported path for `XCUIApplication`.
+
+### Running
+
+```bash
+# All tests on a simulator
+xcodebuild test \
+  -project QRCodeGen/QRCodeGen.xcodeproj \
+  -scheme QRCodeGen \
+  -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=latest' \
+  -enableCodeCoverage YES
+```
+
+CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs SwiftLint (`--strict`) and the unit tests on every push to `main` and every pull request.
+
+> **CI note:** The suite is green locally on the Xcode 27 / iOS 27 beta toolchain. The GitHub Actions runners don't yet ship that toolchain, so the badge will stay red until they do. This is a runner-availability gap, not a test failure.
 
 ## License
 
