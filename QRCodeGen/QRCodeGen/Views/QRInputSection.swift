@@ -54,6 +54,7 @@ struct QRInputSection: View {
                             } label: {
                                 Image(systemName: "xmark.circle.fill")
                                     .foregroundStyle(.secondary)
+                                    .accessibilityHidden(true)
                             }
                             .buttonStyle(.plain)
                             .accessibilityLabel("Clear input")
@@ -66,6 +67,7 @@ struct QRInputSection: View {
                         } label: {
                             Image(systemName: "doc.on.clipboard")
                                 .foregroundStyle(.secondary)
+                                .accessibilityHidden(true)
                         }
                         .buttonStyle(.plain)
                         .accessibilityLabel("Paste from clipboard")

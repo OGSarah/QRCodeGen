@@ -20,4 +20,9 @@ jobs:
       - name: Install SwiftLint
         run: brew install swiftlint
       - name: Lint
-        run: swiftlint lint --config QRCodeGen/.swiftlint.yml --strict
+        # Run from the directory that holds the root .swiftlint.yml WITHOUT
+        # passing --config. An explicit --config disables nested-configuration
+        # discovery, which would ignore the per-folder overrides in
+        # QRCodeGenTests/.swiftlint.yml and QRCodeGenUITests/.swiftlint.yml.
+        working-directory: QRCodeGen
+        run: swiftlint lint --strict
