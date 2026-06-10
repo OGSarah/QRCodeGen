@@ -5,7 +5,10 @@
 
 A Swift iOS QR Code Generator app made with SwiftUI that meets the ISO/IEC 18004 specification for QR codes. The app is made using Core Image.
 
-> **Engineering portfolio note.** This project is intentionally structured to demonstrate senior-level iOS practices on a deliberately small surface: a clean layered architecture with protocol-based dependency injection, an `@Observable` view model, typed errors, a SwiftData persistence layer kept behind a protocol, a comprehensive Swift Testing suite, and CI. See [Architecture](#architecture) and [Testing](#testing).
+CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs SwiftLint (`--strict`) and the unit tests on every push to `main` and every pull request.
+
+> **CI note:** The suite is green locally on the Xcode 27 / iOS 27 beta toolchain. The GitHub Actions runners don't yet ship that toolchain, so the badge will stay red until they do. This is a runner-availability gap, not a test failure.
+
 
 ## Architecture
 
@@ -179,21 +182,6 @@ The suite is split by what it verifies, and the seams above make the business lo
 | `QRCodeFlowUITests` | UI | End-to-end flows via accessibility identifiers (generate, context menu, toolbar, ECL switching). |
 
 Unit tests use **Swift Testing** (`@Suite`/`@Test`/`#expect`); UI tests use **XCUIAutomation** (XCTest), the supported path for `XCUIApplication`.
-
-### Running
-
-```bash
-# All tests on a simulator
-xcodebuild test \
-  -project QRCodeGen/QRCodeGen.xcodeproj \
-  -scheme QRCodeGen \
-  -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=latest' \
-  -enableCodeCoverage YES
-```
-
-CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs SwiftLint (`--strict`) and the unit tests on every push to `main` and every pull request.
-
-> **CI note:** The suite is green locally on the Xcode 27 / iOS 27 beta toolchain. The GitHub Actions runners don't yet ship that toolchain, so the badge will stay red until they do. This is a runner-availability gap, not a test failure.
 
 ## License
 
