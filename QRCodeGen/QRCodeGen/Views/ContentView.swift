@@ -1,12 +1,28 @@
 //
-//  ContentView.swift
-//  QRCodeGen
+// ContentView.swift
+// QRCodeGen
 //
-//  Created by Sarah Clark on 11/11/25.
+// MIT License
 //
-//  Thin composition root for the generator screen. All state and behavior
-//  live in `QRGeneratorViewModel`; this view wires sections together and
-//  owns purely-presentational concerns (haptics, VoiceOver announcements).
+// Copyright (c) 2026 SarahUniverse
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 //
 
 import SwiftUI
@@ -56,15 +72,22 @@ struct ContentView: View {
                         Image(systemName: "qrcode")
                     }
                     Text(viewModel.isGenerating ? "Generating…" : "Generate QR Code")
+                        // .semibold has no bold() equivalent, so fontWeight is required here.
+                        // swiftlint:disable:next discouraged_font_weight
                         .fontWeight(.semibold)
                 }
                 .frame(maxWidth: .infinity)
             }
             .buttonStyle(.glass)
             .glassEffect(.regular.tint(.blue).interactive())
-            .disabled(viewModel.isGenerating || viewModel.inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            .disabled(
+                viewModel.isGenerating
+                    || viewModel.inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            )
             .accessibilityIdentifier("generateButton")
-            .accessibilityHint("Creates a QR code from the current input text using the selected error correction level.")
+            .accessibilityHint(
+                "Creates a QR code from the current input text using the selected error correction level."
+            )
             .accessibilityLabel(viewModel.isGenerating ? "Generating QR code" : "Generate QR code")
 
             if let error = viewModel.errorMessage {
@@ -102,8 +125,10 @@ struct ContentView: View {
             }
 
             if let image = viewModel.renderedImage {
-                ShareLink(item: Image(uiImage: image),
-                          preview: SharePreview("QR Code", image: Image(uiImage: image))) {
+                ShareLink(
+                    item: Image(uiImage: image),
+                    preview: SharePreview("QR Code", image: Image(uiImage: image))
+                ) {
                     Image(systemName: "square.and.arrow.up")
                 }
                 .accessibilityLabel("Share QR code")

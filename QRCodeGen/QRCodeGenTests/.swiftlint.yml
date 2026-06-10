@@ -1,0 +1,9 @@
+# Tests/.swiftlint.yml
+# Pull in the root config, then loosen identifier_name just for test code.
+parent_config: ../.swiftlint.yml
+
+disabled_rules:
+  - identifier_name
+  - line_length
+  - type_body_length
+  - file_length

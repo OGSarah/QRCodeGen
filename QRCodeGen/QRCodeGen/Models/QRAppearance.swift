@@ -1,11 +1,28 @@
 //
-//  QRAppearance.swift
-//  QRCodeGen
+// QRAppearance.swift
+// QRCodeGen
 //
-//  Value type describing the visual styling of a generated QR code:
-//  foreground/background tint and module size. `Codable` (via hex strings)
-//  so it can be persisted alongside a history entry, and `Sendable` so it
-//  can cross actor boundaries into the off-main generator.
+// MIT License
+//
+// Copyright (c) 2026 SarahUniverse
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 //
 
 import SwiftUI
@@ -16,7 +33,7 @@ nonisolated struct QRAppearance: Sendable, Equatable, Codable {
     /// Pixels per QR module. Clamped to a sensible, scannable range.
     var modulePixelSize: Int
 
-    static let `default` = QRAppearance(foreground: .black, background: .white, modulePixelSize: 10)
+    static let `default` = Self(foreground: .black, background: .white, modulePixelSize: 10)
 
     /// Allowed module sizes. Below ~6px QR codes get hard to scan on screen;
     /// above ~20px they waste space without improving scannability.
