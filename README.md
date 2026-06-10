@@ -8,8 +8,6 @@
 
 A Swift iOS QR Code Generator app made with SwiftUI that meets the ISO/IEC 18004 specification for QR codes. The app is made using Core Image.
 
-CI runs [SwiftLint](.github/workflows/swiftlint.yml) (`--strict`) and the [unit tests](.github/workflows/tests.yml) in separate workflows on every push to `main` and every pull request.
-
 > **CI note:** The suite is green locally on the Xcode 27 / iOS 27 beta toolchain. The GitHub Actions runners don't yet ship that toolchain, so the badges will stay red until they do. This is a runner-availability gap, not a test failure.
 
 
