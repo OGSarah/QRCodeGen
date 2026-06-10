@@ -37,7 +37,6 @@ Views/        ContentView shell + focused section views
 | SwiftData behind `HistoryStoring` | SwiftData is an implementation detail, not the architecture — the view model never imports it. |
 | Off-main, `Sendable` generator | Rendering is CPU-bound; the generator is `nonisolated`/`async` so the main thread stays responsive. |
 
-**Deliberately *not* added** (right-sizing is itself a senior signal): a DI container framework, Coordinator/Router, a repository layer over a single store, per-section view models, a hand-rolled QR encoder, or logo/gradient styling. Each would add code without adding correctness for a single-screen app.
 
 # Brief Explanation of Technical Background of QR Codes
 QR codes (Quick Response codes) are two-dimensional barcodes that store information in a grid of black and white squares. Originally developed in 1994 by Denso Wave for tracking automotive parts in manufacturing, QR codes have become ubiquitous for quickly sharing URLs, contact information, and other data through smartphone cameras. The "QR" name reflects their design goal: to be decoded at high speed.
