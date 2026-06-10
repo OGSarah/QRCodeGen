@@ -45,6 +45,7 @@ struct ContentView: View {
                 QRHistorySection(viewModel: viewModel)
             }
             .listStyle(.insetGrouped)
+            .scrollDismissesKeyboard(.interactively)
             .scrollContentBackground(.hidden)
             .background(Color(.systemGroupedBackground))
             .navigationTitle("QR Code Generator")

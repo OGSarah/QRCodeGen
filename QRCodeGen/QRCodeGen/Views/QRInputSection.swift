@@ -29,28 +29,18 @@ import SwiftUI
 
 struct QRInputSection: View {
     @Bindable var viewModel: QRGeneratorViewModel
-    @FocusState private var isInputFocused: Bool
 
     var body: some View {
         Section {
+            // A vertical-axis TextField inserts a newline on the keyboard's return
+            // key, so it never fires `onSubmit`. The enclosing List dismisses the
+            // keyboard interactively on scroll (`.scrollDismissesKeyboard`), which
+            // avoids a keyboard accessory toolbar — those log "Invalid frame
+            // dimension (negative or non-finite)" whenever the keyboard is shown.
             TextField("Enter text to encode", text: $viewModel.inputText, axis: .vertical)
                 .textInputAutocapitalization(.never)
                 .lineLimit(5)
                 .submitLabel(.done)
-                .focused($isInputFocused)
-                .toolbar {
-                    // A vertical-axis TextField inserts a newline on the keyboard's
-                    // return key, so it never fires `onSubmit`. Provide an explicit
-                    // Done button above the keyboard to dismiss it.
-                    ToolbarItemGroup(placement: .keyboard) {
-                        Spacer()
-                        Button("Done") {
-                            isInputFocused = false
-                        }
-                        .accessibilityIdentifier("keyboardDoneButton")
-                        .accessibilityHint("Dismisses the keyboard.")
-                    }
-                }
                 .accessibilityIdentifier("inputTextField")
                 .accessibilityLabel("QR code input text")
                 .accessibilityHint(
