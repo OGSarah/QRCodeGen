@@ -1,11 +1,11 @@
 name: Unit Tests
-
 # Build and run the unit tests on every push to main and on pull requests.
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 concurrency:
   group: tests-${{ github.ref }}
@@ -14,22 +14,66 @@ concurrency:
 jobs:
   test:
     name: Build & Unit Test
-    runs-on: macos-26
+    runs-on: xcode-27
+    # The Xcode 27 image is public preview - no SLA. Don't let it block merges.
+    continue-on-error: true
     env:
       PROJECT: QRCodeGen/QRCodeGen.xcodeproj
       SCHEME: QRCodeGen
-      DEVICE: iPhone 16 Pro
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - name: Select Xcode 26
-        run: sudo xcode-select -switch /Applications/Xcode_26.app
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      # Ask xcodebuild what IT can target. Incompatible entries always carry an
+      # error: field, so filter on that rather than on section headings -
+      # the heading wording changes between Xcode releases.
+      - name: Pick a simulator
+        id: sim
+        run: |
+          pick() {
+            xcodebuild -project "$PROJECT" -scheme "$SCHEME" -showdestinations 2>/dev/null \
+              | tr -d '{}' \
+              | grep 'platform:iOS Simulator' \
+              | grep -v 'error:' \
+              | grep -v 'placeholder' \
+              | grep -v 'Designed for' \
+              | grep 'name:iPhone' \
+              | grep 'OS:' \
+              | sed -E 's/.*OS:([0-9.]+).*name:[[:space:]]*(.*[^[:space:]])[[:space:]]*$/\1|\2/' \
+              || true
+          }
+
+          LINES=$(pick)
+
+          if [ -z "$LINES" ]; then
+            echo 'No iOS Simulator destinations found. Installing the iOS platform.'
+            xcodebuild -downloadPlatform iOS
+            LINES=$(pick)
+          fi
+
+          if [ -z "$LINES" ]; then
+            echo '::error::No iOS Simulator destination for the selected Xcode.'
+            xcodebuild -version || true
+            xcodebuild -project "$PROJECT" -scheme "$SCHEME" -showdestinations || true
+            exit 1
+          fi
+
+          # Newest runtime, then the shortest device name in it,
+          # which prefers plain iPhone models over Pro Max variants.
+          OS=$(printf '%s\n' "$LINES" | cut -d'|' -f1 | sort -V | tail -1)
+          NAME=$(printf '%s\n' "$LINES" \
+            | awk -F'|' -v os="$OS" '$1 == os { print $2 }' \
+            | awk '{ print length, $0 }' \
+            | sort -n | head -1 | cut -d' ' -f2-)
+
+          echo "os=$OS" >> "$GITHUB_OUTPUT"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+          echo "Selected $NAME on iOS $OS"
 
       - name: Install xcbeautify
         run: brew install xcbeautify
-
-      - name: Show available simulators
-        run: xcrun simctl list devices available
 
       - name: Build & run unit tests
         run: |
@@ -37,16 +81,17 @@ jobs:
           xcodebuild test \
             -project "$PROJECT" \
             -scheme "$SCHEME" \
-            -destination "platform=iOS Simulator,name=$DEVICE,OS=latest" \
+            -destination "platform=iOS Simulator,name=${{ steps.sim.outputs.name }},OS=${{ steps.sim.outputs.os }}" \
             -only-testing:QRCodeGenTests \
             -resultBundlePath TestResults.xcresult \
             -enableCodeCoverage YES \
             CODE_SIGNING_ALLOWED=NO \
-            | xcbeautify
+            | xcbeautify --renderer github-actions
 
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: TestResults
           path: TestResults.xcresult
+          if-no-files-found: warn
